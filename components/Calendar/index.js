@@ -19,20 +19,26 @@ const Header = styled.div`
   text-align: center;
 `;
 
-function Calendar({ year, month }) {
+function Calendar({ year, month, eventList = [] }) {
   const days = getCalendarDays(year, month);
+  // const eventList = [];
   return (
     <div>
       <Container>
         {getWeekdayNames().map((w) => (
           <Header key={w}>{w}</Header>
         ))}
-        {days.map((d) => (
-          <Cell date={d}></Cell>
-        ))}
+        {days.map((d) => {
+          const events = getDailyEvents(eventList, d);
+          return <Cell key={d.toString()} date={d} events={events} />;
+        })}
       </Container>
     </div>
   );
+}
+
+function getDailyEvents(eventList, date) {
+  return eventList.filter((e) => e.weekdays.includes(moment(date).day()));
 }
 
 export default Calendar;

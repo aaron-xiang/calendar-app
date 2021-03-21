@@ -11,7 +11,6 @@ export function getCalendarDays(year, month) {
     days.push(d.toDate());
     d.add(1, "d");
   }
-  console.log(days);
   return days;
 }
 

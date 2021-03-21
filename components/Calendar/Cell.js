@@ -1,4 +1,5 @@
 import styled from "styled-components";
+import CalendarEvent from "../CalendarEvent";
 
 const Container = styled.div`
   background-color: ${(props) => (props.isToday ? "#fff0f5" : "#eee")};
@@ -10,6 +11,10 @@ const Container = styled.div`
   max-height: 100px;
 `;
 
+const EventList = styled.div`
+  margin-top: 5px;
+`;
+
 function isToday(date) {
   const today = new Date();
   return (
@@ -19,11 +24,16 @@ function isToday(date) {
   );
 }
 
-function Cell({ date }) {
+function Cell({ date, events = [] }) {
   const day = date.getDate();
   return (
     <Container key={date.toString()} isToday={isToday(date)}>
       <div>{day}</div>
+      <EventList>
+        {events.map((event) => (
+          <CalendarEvent event={event} />
+        ))}
+      </EventList>
     </Container>
   );
 }

@@ -18,7 +18,7 @@ const Header = styled.div`
 
 const today = new Date();
 
-export default function Home() {
+function Home({ eventList }) {
   const [date, setDate] = useState(new Date());
   const adjustMonth = (n) => {
     setDate((d) => moment(d).add(n, "month").toDate());
@@ -35,8 +35,22 @@ export default function Home() {
           <div>{moment(date).format("MMMM YYYY")}</div>
           <button onClick={(e) => adjustMonth(1)}>Next</button>
         </Header>
-        <Calendar year={date.getFullYear()} month={date.getMonth()} />
+        <Calendar
+          year={date.getFullYear()}
+          month={date.getMonth()}
+          eventList={eventList}
+        />
       </Container>
     </div>
   );
 }
+
+Home.getInitialProps = async (ctx) => {
+  console.log("get init props");
+  const res = await fetch("http://localhost:3000/api/events");
+  const eventList = await res.json();
+  console.log(eventList);
+  return { eventList };
+};
+
+export default Home;

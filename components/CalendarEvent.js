@@ -5,17 +5,18 @@ const Container = styled.div`
   border: 1px solid black;
   border-radius: 5px;
   height: 100%;
+  display: flex;
 `;
 
-function Event({ start, end, description }) {
+function CalendarEvent({ startTime, endTime, description }) {
   return (
     <Container>
       <div>
-        {start}-{end}
+        {startTime}-{endTime}
       </div>
-      <div>Decription</div>
+      <div>{description}</div>
     </Container>
   );
 }
 
-export default Event;
+export default CalendarEvent;
