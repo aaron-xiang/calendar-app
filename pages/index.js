@@ -1,65 +1,42 @@
-import Head from 'next/head'
-import styles from '../styles/Home.module.css'
+import { useState } from "react";
+import Head from "next/head";
+import styled from "styled-components";
+import moment from "moment";
+import { getCalendarDays } from "../models/calendar";
+import Calendar from "../components/Calendar/";
+
+const Container = styled.div``;
+
+const Header = styled.div`
+  display: flex;
+  justify-content: space-between;
+  margin-top: 20px;
+  padding: 0px 100px;
+  font-size: 120%;
+  font-weight: bold;
+`;
+
+const today = new Date();
 
 export default function Home() {
+  const [date, setDate] = useState(new Date());
+  const adjustMonth = (n) => {
+    setDate((d) => moment(d).add(n, "month").toDate());
+  };
   return (
-    <div className={styles.container}>
+    <div>
       <Head>
-        <title>Create Next App</title>
+        <title>Calendar App</title>
         <link rel="icon" href="/favicon.ico" />
       </Head>
-
-      <main className={styles.main}>
-        <h1 className={styles.title}>
-          Welcome to <a href="https://nextjs.org">Next.js!</a>
-        </h1>
-
-        <p className={styles.description}>
-          Get started by editing{' '}
-          <code className={styles.code}>pages/index.js</code>
-        </p>
-
-        <div className={styles.grid}>
-          <a href="https://nextjs.org/docs" className={styles.card}>
-            <h3>Documentation &rarr;</h3>
-            <p>Find in-depth information about Next.js features and API.</p>
-          </a>
-
-          <a href="https://nextjs.org/learn" className={styles.card}>
-            <h3>Learn &rarr;</h3>
-            <p>Learn about Next.js in an interactive course with quizzes!</p>
-          </a>
-
-          <a
-            href="https://github.com/vercel/next.js/tree/master/examples"
-            className={styles.card}
-          >
-            <h3>Examples &rarr;</h3>
-            <p>Discover and deploy boilerplate example Next.js projects.</p>
-          </a>
-
-          <a
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-            className={styles.card}
-          >
-            <h3>Deploy &rarr;</h3>
-            <p>
-              Instantly deploy your Next.js site to a public URL with Vercel.
-            </p>
-          </a>
-        </div>
-      </main>
-
-      <footer className={styles.footer}>
-        <a
-          href="https://vercel.com?utm_source=create-next-app&utm_medium=default-template&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Powered by{' '}
-          <img src="/vercel.svg" alt="Vercel Logo" className={styles.logo} />
-        </a>
-      </footer>
+      <Container>
+        <Header>
+          <button onClick={(e) => adjustMonth(-1)}>Prev</button>
+          <div>{moment(date).format("MMMM YYYY")}</div>
+          <button onClick={(e) => adjustMonth(1)}>Next</button>
+        </Header>
+        <Calendar year={date.getFullYear()} month={date.getMonth()} />
+      </Container>
     </div>
-  )
+  );
 }
