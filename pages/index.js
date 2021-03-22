@@ -46,10 +46,10 @@ function Home({ eventList }) {
 }
 
 Home.getInitialProps = async (ctx) => {
-  console.log("get init props");
+  // console.log("get init props");
   const res = await fetch("http://localhost:3000/api/events");
   const eventList = await res.json();
-  console.log(eventList);
+  // console.log(eventList);
   return { eventList };
 };
 

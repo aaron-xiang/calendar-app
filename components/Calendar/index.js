@@ -38,7 +38,31 @@ function Calendar({ year, month, eventList = [] }) {
 }
 
 function getDailyEvents(eventList, date) {
-  return eventList.filter((e) => e.weekdays.includes(moment(date).day()));
+  return eventList.filter((e) => {
+    return e.isRecurrent
+      ? checkRecurrentEvent(e, date)
+      : checkNonRecurrentEvent(e, date);
+  });
+}
+
+function checkRecurrentEvent(event, date) {
+  const startDate = moment(event.StartDate);
+  const endDate = moment(event.endDate);
+  const today = moment(date);
+  const weekday = today.day();
+  const weekdays = event.weekdays.map((v, i) => (v ? i : -1));
+  if (
+    today.isSameOrAfter(startDate) &&
+    today.isSameOrBefore(endDate) &&
+    weekdays.includes(weekday)
+  )
+    return true;
+  else return false;
+}
+
+function checkNonRecurrentEvent(event, date) {
+  const today = moment(date).format("YYYY-MM-DD");
+  return event.startDate === today;
 }
 
 export default Calendar;

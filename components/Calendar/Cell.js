@@ -7,6 +7,7 @@ const Container = styled.div`
   padding: 10px;
   display: flex;
   flex-direction: column;
+  align-content: flex-start;
   overflow: scroll;
   max-height: 100px;
 `;
@@ -31,7 +32,7 @@ function Cell({ date, events = [] }) {
       <div>{day}</div>
       <EventList>
         {events.map((event) => (
-          <CalendarEvent event={event} />
+          <CalendarEvent key={event.description} event={event} />
         ))}
       </EventList>
     </Container>
