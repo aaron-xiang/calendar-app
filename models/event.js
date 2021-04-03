@@ -1,5 +1,13 @@
+import moment from "moment";
+
 class Event {
-  constructor(startDate, endDate, startTime, endTime, description) {
+  constructor(
+    startDate = moment().format("YYYY-MM-DD"),
+    endDate = "",
+    startTime = "",
+    endTime = "",
+    description = ""
+  ) {
     this.startDate = startDate;
     this.endDate = endDate;
     this.startTime = startTime;

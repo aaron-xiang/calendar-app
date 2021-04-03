@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
 import { getWeekdayNames, getWeekdayNumber } from "../models/calendar";
-import { updateEvent, deleteEvent } from "../services/event";
+import { updateEvent, deleteEvent, createEvent } from "../services/event";
 
 const fields = [
   ["startDate", "Start Date"],
@@ -89,7 +89,12 @@ function Event() {
   };
 
   const saveEvt = async () => {
-    const updatedEvent = await updateEvent(event);
+    let updatedEvent = null;
+    if (event.id) {
+      const updatedEvent = await updateEvent(event);
+    } else {
+      const updatedEvent = await createEvent(event);
+    }
     if (updateEvent) {
       setMessage("Event update successfully");
     } else {

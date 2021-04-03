@@ -47,13 +47,13 @@ function getDailyEvents(eventList, date) {
 
 function checkRecurrentEvent(event, date) {
   const startDate = moment(event.StartDate);
-  const endDate = moment(event.endDate);
+  const endDate = event.endDate ? moment(event.endDate) : null;
   const today = moment(date);
   const weekday = today.day();
   const weekdays = event.weekdays.map((v, i) => (v ? i : -1));
   if (
     today.isSameOrAfter(startDate) &&
-    today.isSameOrBefore(endDate) &&
+    (today.isSameOrBefore(endDate) || !endDate) &&
     weekdays.includes(weekday)
   )
     return true;
