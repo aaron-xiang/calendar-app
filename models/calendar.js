@@ -25,3 +25,12 @@ export function getWeekdayNames() {
   }
   return weekDays;
 }
+
+export function getWeekdayName(index) {
+  return getWeekdayNames()[index];
+}
+
+export function getWeekdayNumber(weekday) {
+  const weekdays = getWeekdayNames();
+  return weekdays.indexOf(weekday);
+}

@@ -1,7 +1,8 @@
 import React, { useState } from "react";
 import styled from "styled-components";
 import { useRouter } from "next/router";
-import { getWeekdayNames } from "../models/calendar";
+import { getWeekdayNames, getWeekdayNumber } from "../models/calendar";
+import { updateEvent, deleteEvent } from "../services/event";
 
 const fields = [
   ["startDate", "Start Date"],
@@ -18,37 +19,96 @@ const days = getWeekdayNames();
 const Container = styled.form`
   display: flex;
   flex-direction: column;
+  align-items: center;
+  margin-top: 20px;
+  label {
+    margin: 5px;
+  }
 `;
 
 const Weekdays = styled.div`
   display: flex;
   flex-wrap: wrap;
-  width: 60%;
+  width: 40%;
   justify-content: space-between;
+`;
+
+const Toolbar = styled.div`
+  display: flex;
+  justify-content: center;
+  width: 40%;
+  button {
+    margin: 10px;
+    width: 70px;
+  }
+`;
+
+const Message = styled.div`
+  margin: 20px;
 `;
 
 function Event() {
   const router = useRouter();
   const data = JSON.parse(router.query.data);
   const [event, setEvent] = useState(data);
+  const [message, setMessage] = useState("");
   const onSubmit = (e) => {
     e.preventDefault();
   };
+
   const onChange = (e) => {
     setEvent((event) => ({
       ...event,
       [e.target.name]: e.target.value,
     }));
   };
+
   const onCheck = (e) => {
-    setEvent((event) => ({
-      ...event,
-      [e.target.name]: !event[e.target.name],
-    }));
+    setEvent((event) => {
+      const newEvent = {
+        ...event,
+        [e.target.name]: e.target.checked,
+        weekdays: e.target.checked
+          ? [...event.weekdays]
+          : [false, false, false, false, false, false, false],
+      };
+      return newEvent;
+    });
   };
-  const changeWeekday = (e) => {};
+
+  const changeWeekday = (e) => {
+    const weekday = e.target.name;
+    const index = getWeekdayNumber(weekday);
+    const newEvent = { ...event };
+    newEvent.weekdays[index] = e.target.checked;
+    setEvent(newEvent);
+  };
+
+  const cancel = () => {
+    router.push("./");
+  };
+
+  const saveEvt = async () => {
+    const updatedEvent = await updateEvent(event);
+    if (updateEvent) {
+      setMessage("Event update successfully");
+    } else {
+      setMessage("Unable to save event");
+    }
+  };
+
+  const deleteEvt = async () => {
+    const deletedEvent = await deleteEvent(event);
+    if (deletedEvent) {
+      setMessage("Event deleted successfully");
+    } else {
+      setMessage("Unable to delete event");
+    }
+  };
+
   return (
     <Container onSubmit={onSubmit}>
+      <div>Event ID: {event.id}</div>
       {fields.map(([key, label]) => (
         <label>
           {`${label}: `}
@@ -79,6 +139,12 @@ function Event() {
           ))}
         </Weekdays>
       ) : null}
+      <Toolbar>
+        <button onClick={saveEvt}>Save</button>
+        <button onClick={deleteEvt}>Delete</button>
+        <button onClick={cancel}>Cancel</button>
+      </Toolbar>
+      <Message>{message}</Message>
     </Container>
   );
 }

@@ -4,6 +4,7 @@ import styled from "styled-components";
 import moment from "moment";
 import { getCalendarDays } from "../models/calendar";
 import Calendar from "../components/Calendar/";
+import { getAllEvents } from "../services/event";
 
 const Container = styled.div``;
 
@@ -47,8 +48,7 @@ function Home({ eventList }) {
 
 Home.getInitialProps = async (ctx) => {
   // console.log("get init props");
-  const res = await fetch("http://localhost:3000/api/events");
-  const eventList = await res.json();
+  const eventList = await getAllEvents();
   // console.log(eventList);
   return { eventList };
 };

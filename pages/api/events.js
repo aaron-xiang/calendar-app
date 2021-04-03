@@ -1,31 +1,53 @@
-const events = [
-  {
-    startDate: "2021-01-01",
-    endDate: "2021-04-30",
-    startTime: "09:30",
-    endTime: "10:00",
-    description: "Event #1",
-    isRecurrent: true,
-    weekdays: [false, true, true, false, false, false, false],
-  },
-  {
-    startDate: "2021-03-01",
-    endDate: "2021-05-30",
-    startTime: "13:30",
-    endTime: "14:00",
-    description: "Event 2",
-    isRecurrent: true,
-    weekdays: [false, false, false, true, true, false, false],
-  },
-  {
-    startDate: "2021-04-01",
-    startTime: "13:30",
-    endTime: "14:00",
-    description: "Event 3",
-    isRecurrent: false,
-  },
-];
+import { v4 as uuidv4 } from "uuid";
+import fs from "fs";
+import path from "path";
+
+const dbFile = path.join("db", "events.json");
+const events = JSON.parse(fs.readFileSync(dbFile));
+
+function createNewEvent(event) {
+  event.id = uuidv4();
+  events.push(event);
+  fs.writeFileSync(dbFile, JSON.stringify(events, null, 2));
+  return event;
+}
+
+function updateEvent(event) {
+  const index = events.findIndex((e) => e.id === event.id);
+  const newEvent = { ...events[index], ...event };
+  events[index] = newEvent;
+  fs.writeFileSync(dbFile, JSON.stringify(events, null, 2));
+  return newEvent;
+}
+
+function deleteEvent(event) {
+  const index = events.findIndex((e) => e.id === event.id);
+  const deletedEvent = events[index];
+  events.splice(index, 1);
+  fs.writeFileSync(dbFile, JSON.stringify(events, null, 2));
+  return deletedEvent;
+}
 
 export default (req, res) => {
-  return res.status(200).json(events);
+  switch (req.method) {
+    case "GET":
+      return res.status(200).json(events);
+      break;
+    case "POST":
+      const newEvent = createNewEvent(req.body);
+      return res.status(200).json(newEvent);
+      break;
+    case "PUT":
+      console.log(req.body);
+      const updatedEvent = updateEvent(req.body);
+      return res.status(200).json(updatedEvent);
+      break;
+    case "DELETE":
+      const deletedEvent = deleteEvent(req.body);
+      return res.status(200).json(deletedEvent);
+      break;
+    default:
+      return res.status(405).end();
+      break;
+  }
 };
