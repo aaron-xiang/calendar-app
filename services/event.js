@@ -1,6 +1,7 @@
 import config from "../config/config";
 
 export async function getAllEvents() {
+  console.log("event url:", config.eventUrl);
   const res = await fetch(config.eventUrl);
   return res.json();
 }

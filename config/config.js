@@ -1,5 +1,5 @@
 const config = {
-  eventUrl: "http://localhost:3000/api/events",
+  eventUrl: `${process.env.HOST_NAME}/api/events`,
 };
 
 export default config;
