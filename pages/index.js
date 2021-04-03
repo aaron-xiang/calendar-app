@@ -46,11 +46,11 @@ function Home({ eventList }) {
   );
 }
 
-Home.getInitialProps = async (ctx) => {
+export async function getServerSideProps() {
   // console.log("get init props");
   const eventList = await getAllEvents();
   // console.log(eventList);
-  return { eventList };
-};
+  return { props: { eventList } };
+}
 
 export default Home;

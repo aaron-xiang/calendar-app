@@ -49,6 +49,7 @@ const Message = styled.div`
 
 function Event() {
   const router = useRouter();
+  if (!router.query.data) return null;
   const data = JSON.parse(router.query.data);
   const [event, setEvent] = useState(data);
   const [message, setMessage] = useState("");
