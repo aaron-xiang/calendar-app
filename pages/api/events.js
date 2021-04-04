@@ -2,7 +2,9 @@ import { v4 as uuidv4 } from "uuid";
 import fs from "fs";
 import path from "path";
 
-const dbFile = path.join("db", "events.json");
+console.log(__dirname);
+// const dbFile = path.join("db", "events.json");
+const dbFile = path.resolve("public", "events.json");
 const events = JSON.parse(fs.readFileSync(dbFile));
 
 function createNewEvent(event) {

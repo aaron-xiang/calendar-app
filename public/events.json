@@ -1,0 +1,46 @@
+[
+  {
+    "id": "7ac47820-d225-4136-ae85-44dc3ea43e25",
+    "startDate": "2021-01-01",
+    "endDate": "2021-04-30",
+    "startTime": "09:00",
+    "endTime": "10:00",
+    "description": "My Event #1",
+    "isRecurrent": true,
+    "weekdays": [
+      false,
+      true,
+      false,
+      true,
+      false,
+      false,
+      false
+    ]
+  },
+  {
+    "id": "543c70b6-914c-44b7-bbe1-efb946ad533d",
+    "startDate": "2021-03-01",
+    "endDate": "2021-05-30",
+    "startTime": "13:30",
+    "endTime": "14:00",
+    "description": "Event 2",
+    "isRecurrent": true,
+    "weekdays": [
+      false,
+      false,
+      false,
+      true,
+      true,
+      false,
+      false
+    ]
+  },
+  {
+    "id": "d144b314-158e-49f8-aa22-3d468b64e2f5",
+    "startDate": "2021-04-01",
+    "startTime": "13:30",
+    "endTime": "14:00",
+    "description": "Event 3",
+    "isRecurrent": false
+  }
+]
